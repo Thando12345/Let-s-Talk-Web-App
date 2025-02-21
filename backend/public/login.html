@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login</title>
+  <!-- Bootstrap CSS (using CDN for Bootstrap 3) -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+  <h2>Login</h2>
+  <form id="loginForm">
+    <div class="form-group">
+      <label for="email">Email address:</label>
+      <input type="email" class="form-control" id="email" name="email" placeholder="Enter email" required>
+    </div>
+    <div class="form-group">
+      <label for="pwd">Password:</label>
+      <input type="password" class="form-control" id="pwd" name="password" placeholder="Enter password" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Login</button>
+  </form>
+  <br>
+  <div id="result"></div>
+  <!-- Link to the signup page -->
+  <p>Not registered? <a href="/signup">Sign up here</a></p>
+</div>
+  <br>
+  <div id="result"></div>
+</div>
+
+<!-- jQuery (required for AJAX) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+  $('#loginForm').submit(function(e) {
+    e.preventDefault();
+    var email = $('#email').val();
+    var password = $('#pwd').val();
+    $.ajax({
+      url: '/api/auth/login',
+      method: 'POST',
+      contentType: 'application/json',
+      data: JSON.stringify({ email: email, password: password }),
+      success: function(data) {
+        $('#result').html('<div class="alert alert-success">Login successful!<br>Token: ' + data.token + '</div>');
+      },
+      error: function(xhr) {
+        $('#result').html('<div class="alert alert-danger">Error: ' + xhr.responseJSON.error + '</div>');
+      }
+    });
+  });
+</script>
+</body>
+</html>
